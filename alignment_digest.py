@@ -15,7 +15,7 @@ DEEPSEEK_API_KEY = os.getenv('DEEPSEEK_API_KEY')
 # Initialize OpenAI client with DeepSeek base URL
 client = OpenAI(
     api_key=DEEPSEEK_API_KEY,
-    base_url="https://api.deepseek.com"
+    base_url="https://api.deepseek.com/v1"
 )
 
 # Constants
