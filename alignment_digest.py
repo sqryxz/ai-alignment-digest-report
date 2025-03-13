@@ -6,14 +6,14 @@ from datetime import datetime
 import schedule
 import time
 from dotenv import load_dotenv
-from openai import OpenAI
+import openai
 
 # Load environment variables
 load_dotenv()
 DEEPSEEK_API_KEY = os.getenv('DEEPSEEK_API_KEY')
 
 # Initialize OpenAI client with DeepSeek base URL
-client = OpenAI(
+client = openai.Client(
     api_key=DEEPSEEK_API_KEY,
     base_url="https://api.deepseek.com/v1"
 )
@@ -94,15 +94,15 @@ def summarize_post(post):
     Content: {post['content'][:2000]}  # Limit content length for API
     """
     
-    response = client.ChatCompletion.create(
-        model="deepseek-chat",  # Using DeepSeek-V3 model
+    response = client.chat.completions.create(
+        model="deepseek-chat",
         messages=[
             {"role": "system", "content": "You are a helpful assistant specialized in AI alignment research."},
             {"role": "user", "content": prompt}
         ]
     )
     
-    return response.choices[0].message['content']
+    return response.choices[0].message.content
 
 def generate_key_themes_summary(posts):
     """Generate a summary of key themes from all posts"""
@@ -122,7 +122,7 @@ def generate_key_themes_summary(posts):
     {combined_text}
     """
     
-    response = client.ChatCompletion.create(
+    response = client.chat.completions.create(
         model="deepseek-chat",
         messages=[
             {"role": "system", "content": "You are a helpful assistant specialized in AI alignment research."},
@@ -130,7 +130,7 @@ def generate_key_themes_summary(posts):
         ]
     )
     
-    return response.choices[0].message['content']
+    return response.choices[0].message.content
 
 def generate_digest():
     """Generate daily digest of AI alignment posts"""
