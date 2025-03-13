@@ -185,7 +185,12 @@ def main():
     # Generate digest immediately on startup
     generate_digest()
     
-    # Schedule daily digest generation
+    # If running in GitHub Actions, exit after generating once
+    if os.environ.get('GITHUB_ACTIONS'):
+        print("Running in GitHub Actions - exiting after single digest generation")
+        return
+    
+    # Schedule daily digest generation for local runs
     schedule.every().day.at("00:00").do(generate_digest)
     
     # Keep the script running
